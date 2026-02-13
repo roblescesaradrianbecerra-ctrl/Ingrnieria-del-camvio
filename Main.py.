@@ -1,22 +1,24 @@
-import os
-from flask import Flask, jsonify
+import http.server
+import socketserver
+import threading
+import time
 
-app = Flask(__name__)
+# Puerto para Render
+PORT = 8080
 
-CONFIG = {
-    "MARCA": "César Becerra vuelve a creer en ti",
-    "LIBRO_DE_VALOR": 147.00,
-    "LINK_MERCADO_PAGO": "https://mpago.li/1gTiqKF"
-}
+def keep_alive():
+    Handler = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        httpd.serve_forever()
 
-@app.route('/')
-def inicio():
-    return f"Sistema de {CONFIG['MARCA']} Activo"
-
-@app.route('/vendedor')
-def vender():
-    return jsonify({"pago": CONFIG['LINK_MERCADO_PAGO']})
+def principal():
+    print("INGENIERÍA DEL CAMBIO - SISTEMA ACTIVO")
+    while True:
+        # Aquí puedes poner tu lógica o dejarlo así para que esté siempre encendido
+        time.sleep(10) 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    # Inicia servidor web para Render
+    threading.Thread(target=keep_alive, daemon=True).start()
+    # Inicia tu programa
+    principal()
