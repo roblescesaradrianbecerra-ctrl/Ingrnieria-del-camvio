@@ -5,23 +5,18 @@ app = Flask(__name__)
 
 CONFIG = {
     "MARCA": "César Becerra vuelve a creer en ti",
-    "VALOR_WORKBOOK": 147.00, 
-    "ARCHIVO_REGALO": "https://drive.google.com/file/d/1uJgW_AlIAO2QJyhK-hPI6hRvOA4nreyb/view?usp=drivesdk",
-    "ARCHIVO_VENTA": "https://drive.google.com/file/d/1r6KkR3_KMblg9ClOHOFuj31REdKSYlHR/view?usp=drivesdk",
-    "LINK_MERCADO_PAGO": "https://mpago.li/1gTiqKF" 
+    "LIBRO_DE_VALOR": 147.00,
+    "LINK_MERCADO_PAGO": "https://mpago.li/1gTiqKF"
 }
 
 @app.route('/')
-def home():
+def inicio():
     return f"Sistema de {CONFIG['MARCA']} Activo"
 
-@app.route('/regalo')
-def regalo():
-    return jsonify({"mensaje": "Guía lista", "url": CONFIG["ARCHIVO_REGALO"]})
-
-@app.route('/vender')
+@app.route('/vendedor')
 def vender():
-    return jsonify({"pago": CONFIG["LINK_MERCADO_PAGO"]})
+    return jsonify({"pago": CONFIG['LINK_MERCADO_PAGO']})
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
