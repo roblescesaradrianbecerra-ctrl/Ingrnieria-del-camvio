@@ -1,24 +1,13 @@
-import http.server
-import socketserver
-import threading
-import time
+from flask import Flask
+import os
 
-# Puerto para Render
-PORT = 8080
+app = Flask(__name__)
 
-def keep_alive():
-    Handler = http.server.SimpleHTTPRequestHandler
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        httpd.serve_forever()
-
-def principal():
-    print("INGENIERÍA DEL CAMBIO - SISTEMA ACTIVO")
-    while True:
-        # Aquí puedes poner tu lógica o dejarlo así para que esté siempre encendido
-        time.sleep(10) 
+@app.route('/')
+def home():
+    return "SISTEMA DE INGENIERÍA DEL CAMBIO ACTIVO"
 
 if __name__ == "__main__":
-    # Inicia servidor web para Render
-    threading.Thread(target=keep_alive, daemon=True).start()
-    # Inicia tu programa
-    principal()
+    # Render usa el puerto 10000 por defecto
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
