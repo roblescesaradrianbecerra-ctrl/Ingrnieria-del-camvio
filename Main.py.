@@ -1,13 +1,32 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import os
 
 app = Flask(__name__)
 
+# Memoria de mensajes para cobrar al llegar al 5to
+clientes = {}
+
 @app.route('/')
 def home():
-    return "SISTEMA DE INGENIERÍA DEL CAMBIO ACTIVO"
+    return "SISTEMA DE INGENIERÍA DEL CAMBIO - BRITTANY ACTIVA"
+
+@app.route('/enviar', methods=['POST'])
+def gestionar():
+    datos = request.json
+    num = datos.get('numero')
+    
+    if num not in clientes:
+        clientes[num] = 0
+    clientes[num] += 1
+    
+    # Lógica de los 500 MXN
+    if clientes[num] == 5:
+        res = "Ingeniero, para la solución técnica final de 30 min, el costo es de $500 MXN. Pague aquí: https://mpago.la/2rtV9Cg"
+    else:
+        res = "Entiendo. Según la Ingeniería del Cambio, esto requiere un ajuste. Cuénteme más."
+        
+    return jsonify({"respuesta": res}), 200
 
 if __name__ == "__main__":
-    # Render usa el puerto 10000 por defecto
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
